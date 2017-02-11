@@ -7,12 +7,16 @@ public class BoardManager : MonoBehaviour {
 	public GameObject tileObject;
 	public GameObject townObject;
 	public GameObject roadObject;
-	public int mapRadius;
 	public bool pointyTopped;
 
+	private Transform boardObject;
 	private Dictionary<Hex, Tile> allTiles;
 	private Dictionary<Vertex, Town> allTowns;
 	private Dictionary<Edge, Road> allRoads;
+
+	private List<int> tileNumbersList;
+	private List<TileType> tileTypesList;
+	private const int mapRadius = 3;
 
 	//*******************************************************************************************
 	// Unity methods
@@ -40,6 +44,8 @@ public class BoardManager : MonoBehaviour {
 		allTiles = new Dictionary<Hex, Tile>();
 		allTowns = new Dictionary<Vertex, Town>();
 		allRoads = new Dictionary<Edge, Road>();
+
+		boardObject = new GameObject("Board").transform;
 	}
 
 	private void Start() {
@@ -50,6 +56,9 @@ public class BoardManager : MonoBehaviour {
 	// Public methods
 	//*******************************************************************************************
 	public void InitBoard() {
+		tileNumbersList = CreateTileNumbers();
+		tileTypesList = CreateTileTypes();
+
 		for (int q = -mapRadius; q <= mapRadius; q++) {
 			int r1 = Mathf.Max(-mapRadius, -q - mapRadius);
 			int r2 = Mathf.Min(mapRadius, -q + mapRadius);
@@ -96,11 +105,14 @@ public class BoardManager : MonoBehaviour {
 		Tile newTile;
 
 		newTileObj = Instantiate(toInstantiate, instantiatePosition, rotation) as GameObject;
+		newTileObj.transform.parent = boardObject;
 		newTile = newTileObj.GetComponent<TileMono>().GetTile();
 
-    allTiles.Add(hex, newTile);
-		newTile.SetUp(hex);
-	}
+		allTiles.Add(hex, newTile);
+		SetUpTile(newTile, hex);
+
+    newTile.DisplayDebug();
+  }
 
 	private void CreateTown(Vertex vertex) {
 		GameObject toInstantiate = townObject;
@@ -110,6 +122,7 @@ public class BoardManager : MonoBehaviour {
 		Town newTown;
 
 		newTownObj = Instantiate(toInstantiate, instantiatePosition, rotation) as GameObject;
+		newTownObj.transform.parent = boardObject;
 		newTown = newTownObj.GetComponent<TownMono>().GetTown();
 
 		allTowns.Add(vertex, newTown);
@@ -124,9 +137,65 @@ public class BoardManager : MonoBehaviour {
 		Road newRoad;
 
 		newRoadObj = Instantiate(toInstantiate, instantiatePosition, rotation) as GameObject;
+		newRoadObj.transform.parent = boardObject;
 		newRoad = newRoadObj.GetComponent<RoadMono>().GetRoad();
 
 		allRoads.Add(edge, newRoad);
 		newRoad.SetUp(edge);
 	}
+
+	private void SetUpTile(Tile tileToSetup, Hex tileHex) {
+		int indexTileType = Random.Range(0, tileTypesList.Count);
+		int tileNumber;
+		TileType tileType;
+
+		if (IsOceanTile(tileHex)) {
+			tileType = TileType.OCEAN;
+			tileNumber = 0;
+    }
+		else {
+			if (tileTypesList[indexTileType] != TileType.DESERT) {
+				tileNumber = tileNumbersList[0];
+				tileNumbersList.RemoveAt(0);
+			}
+			else {
+				tileNumber = 7;
+			}
+
+			tileType = tileTypesList[indexTileType];
+			tileTypesList.RemoveAt(indexTileType);
+    }
+
+		tileToSetup.SetUp(tileHex, tileNumber, tileType);
+
+	}
+
+	private bool IsOceanTile(Hex hex) {
+		return !(Mathf.Abs(hex.q) != mapRadius && Mathf.Abs(hex.r) != mapRadius && Mathf.Abs(hex.q + hex.r) != mapRadius);
+  }
+
+	private List<int> CreateTileNumbers() {
+		return new List<int>() {
+			5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11
+		};
+	}
+
+	private List<TileType> CreateTileTypes() {
+		return new List<TileType>() {
+			TileType.DESERT, TileType.WOOD, TileType.WOOD, TileType.WOOD, TileType.WOOD,
+			TileType.FARM, TileType.FARM, TileType.FARM, TileType.FARM, TileType.HILL,
+			TileType.HILL, TileType.HILL, TileType.HILL, TileType.CLAY, TileType.CLAY, 
+			TileType.CLAY, TileType.MOUNTAIN, TileType.MOUNTAIN, TileType.MOUNTAIN
+		};
+	}
+}
+
+public enum TileType {
+	DESERT,
+	WOOD,
+	FARM,
+	HILL,
+	CLAY,
+	MOUNTAIN,
+	OCEAN
 }
