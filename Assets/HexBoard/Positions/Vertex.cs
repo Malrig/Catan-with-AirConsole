@@ -89,4 +89,8 @@ public class Vertex {
 		hash = (hash * 7) + (!Object.ReferenceEquals(null, top) ? top.GetHashCode() : 0);
 		return hash;
 	}
+
+	public override string ToString() {
+		return "(" + hex.q.ToString() + ", " + hex.r.ToString() + "," + top.ToString() + ")";
+	}
 }

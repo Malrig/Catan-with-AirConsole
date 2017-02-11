@@ -211,6 +211,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allowedMessages: 
   minimumPriority: 0
+  airConsoleInfo: 0
 --- !u!1 &1098018954
 GameObject:
   m_ObjectHideFlags: 0

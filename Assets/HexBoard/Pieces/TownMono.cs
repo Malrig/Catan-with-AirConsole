@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +7,17 @@ using UnityEngine;
 // i.e. updating appearance etc.
 public class TownMono : MonoBehaviour, ITownController {
 
+	public GameObject HighlightObject;
+
 	private Town town;
 
+	//*******************************************************************************************
+	// Unity methods
+	//*******************************************************************************************
 	private void OnEnable() {
 		town = new Town();
 		town.SetTownController(this);
+		HighlightObject.SetActive(false);
 	}
 
 	//*******************************************************************************************
@@ -20,6 +27,12 @@ public class TownMono : MonoBehaviour, ITownController {
 		return town;
 	}
 
+	//*******************************************************************************************
+	// ITownController methods
+	//*******************************************************************************************
+	public void HighlightTown(bool highlight) {
+		HighlightObject.SetActive(highlight);
+  }
 }
 
 public class Town {
@@ -43,9 +56,14 @@ public class Town {
 
 		initialised = true;
 	}
+
 	public void SetTownController(ITownController townController) {
 		this.townController = townController;
 	}
+
+	public void HighlightTown(bool highlight) {
+		townController.HighlightTown(highlight);
+  }
 
 	//*******************************************************************************************
 	// Private methods
@@ -59,5 +77,5 @@ public class Town {
 }
 
 public interface ITownController {
-
+	void HighlightTown(bool highlight);
 }

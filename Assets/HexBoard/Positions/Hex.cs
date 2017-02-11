@@ -161,6 +161,9 @@ public class Hex {
 		return hash;
 	}
 
+	public override string ToString() {
+		return "(" + q.ToString() + ", " + r.ToString() + ")";
+	}
 }
 
 // Contains the information determining a hexagons position but non-integer values are allowed.

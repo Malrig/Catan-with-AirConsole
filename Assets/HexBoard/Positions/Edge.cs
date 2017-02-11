@@ -91,4 +91,8 @@ public class Edge {
 		hash = (hash * 7) + (!UnityEngine.Object.ReferenceEquals(null, direction) ? direction.GetHashCode() : 0);
 		return hash;
 	}
+
+	public override string ToString() {
+		return "(" + hex.q.ToString() + ", " + hex.r.ToString() + "," + direction.ToString() + ")";
+	}
 }
