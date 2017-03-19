@@ -73,7 +73,7 @@ public class MessageManager {
 
 	private void OnMessage(int from, JToken data) {
 		// This is the method called whenever a message is received from a controller. Will need 
-		// to put all the logic here which processes and then performs the actiosn the controller
+		// to put all the logic here which processes and then performs the actions the controller
 		// will attempt to make.
 	}
 }
