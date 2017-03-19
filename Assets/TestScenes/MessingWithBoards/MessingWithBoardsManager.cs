@@ -10,7 +10,7 @@ public class MessingWithBoardsManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		boardNavigator = new BoardNavigator(boardManager);
+		boardNavigator = boardManager.GetBoardNavigator();
 	}
 
 	public void Move(int move) {
@@ -26,5 +26,17 @@ public class MessingWithBoardsManager : MonoBehaviour {
 		else if (move == 4) {
 			boardNavigator.MoveOnBoard(0, -1);
 		}
+	}
+
+	public void CreateSettlement() {
+		boardManager.CreateSettlement();
+	}
+
+	public void CreateCity() {
+		boardManager.CreateCity();
+	}
+
+	public void RevertTown() {
+		boardManager.RevertTown();
 	}
 }

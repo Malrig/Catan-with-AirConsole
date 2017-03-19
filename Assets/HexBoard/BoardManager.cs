@@ -10,6 +10,8 @@ public class BoardManager : MonoBehaviour, IVertexHighlighter {
 	public GameObject roadObject;
 	public bool pointyTopped;
 
+	private BoardNavigator boardNavigator;
+
 	private Transform boardObject;
 	private Dictionary<Hex, Tile> allTiles;
 	private Dictionary<Vertex, Town> allTowns;
@@ -47,6 +49,8 @@ public class BoardManager : MonoBehaviour, IVertexHighlighter {
 		allRoads = new Dictionary<Edge, Road>();
 
 		boardObject = new GameObject("Board").transform;
+
+		boardNavigator = new BoardNavigator(this);
 	}
 
 	private void Start() {
@@ -94,6 +98,28 @@ public class BoardManager : MonoBehaviour, IVertexHighlighter {
 				}
 			}
 		}
+	}
+
+	public BoardNavigator GetBoardNavigator() {
+		return boardNavigator;
+  }
+
+	public void CreateSettlement() {
+		Vertex createVertex = boardNavigator.GetCurrentVertex();
+
+		allTowns[createVertex].SetTownState(TownState.SETTLEMENT);
+	}
+
+	public void CreateCity() {
+		Vertex createVertex = boardNavigator.GetCurrentVertex();
+
+		allTowns[createVertex].SetTownState(TownState.CITY);
+	}
+
+	public void RevertTown() {
+		Vertex createVertex = boardNavigator.GetCurrentVertex();
+
+		allTowns[createVertex].SetTownState(TownState.EMPTY);
 	}
 
 	//*******************************************************************************************

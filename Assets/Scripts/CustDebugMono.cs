@@ -25,16 +25,23 @@ public class CustDebugMono : MonoBehaviour {
 	public void LogToScreen(string debugMessage) {
 		Debug.Log(debugMessage);
 	}
+
+	public void WarnToScreen(string warningMessage) {
+		Debug.LogWarning(warningMessage);
+	}
 }
 
 public enum ScriptType {
-	//GAME_MANAGER,
+	CUST_DEBUG,
 	BOARD_MANAGER,
 	MESSAGE_MANAGER,
+	TILE,
+	TOWN,
+	ROAD
+	//GAME_MANAGER,
 	//TURN_MANAGER,
 	//PLAYER_CONTROLLER,
 	//ACTION,
-	CUST_DEBUG
 }
 
 public class CustDebug {
@@ -68,5 +75,9 @@ public class CustDebug {
 				(priority >= minimumPriority)) {
 			debugMono.LogToScreen(debugMessage);
 		}
+	}
+
+	public void Warn(string warningMessage) {
+		debugMono.WarnToScreen(warningMessage);
 	}
 }

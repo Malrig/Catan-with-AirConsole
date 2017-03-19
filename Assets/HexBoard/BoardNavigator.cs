@@ -45,6 +45,10 @@ public class BoardNavigator {
 		vertexHighlighter.HighlightVertex(currentVertex, true);
 	}
 
+	public Vertex GetCurrentVertex() {
+		return currentVertex;
+	}
+
 	//*******************************************************************************************
 	// Private methods
 	//*******************************************************************************************
